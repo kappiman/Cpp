@@ -486,7 +486,8 @@ define(function (require, exports, module) {
             i,
             len; 
         
-        this.translateTypes(options, _namespace, compilationUnitNode["member"]);     
+        console.log(JSON.stringify(compilationUnitNode["member"]));
+        this.translateTypes(options, _namespace, compilationUnitNode["member"]);
         
     };
       
@@ -504,6 +505,7 @@ define(function (require, exports, module) {
                 var typeNode = typeNodeArray[i];
                 switch (typeNode.node) {
                 case "namespace":
+                    console.log("Translate namespace");
                     var _package = this.translatePackage(options, _namespace, typeNode);
                     if (_package !== null) {
                         _namespace = _package;
@@ -513,15 +515,22 @@ define(function (require, exports, module) {
                     break;
                 case "class":
                 case "struct":
+                    console.log("Translate struct/class");
                     this.translateClass(options, namespace, typeNode);
                     break; 
                 case "enum":
+                    console.log("Translate enum");
                     this.translateEnum(options, namespace, typeNode);
                     break; 
                 case "using":
+                    console.log("Translate using");
                     this._usingList.push(typeNode);
                     break;
+                default:
+                    console.log("do not parse node type: " + typeNode.node);
+                    break;
                 }
+                
             }
         }
     };
